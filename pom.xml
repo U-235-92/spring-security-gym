@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>spring-security-simple</module>
+		<module>spring-security-authorization-server</module>
 	</modules>
 
 	<properties>
@@ -87,5 +88,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
