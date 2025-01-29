@@ -78,7 +78,19 @@ public class SecurityConfig {
 					.accessTokenTimeToLive(Duration.ofMinutes(60))
 					.build())
 				.build();
-		InMemoryRegisteredClientRepository clientRepository = new InMemoryRegisteredClientRepository(registredClient);
+		RegisteredClient resourceServer = RegisteredClient
+				.withId(UUID.randomUUID().toString())
+				.clientId("resource_server")
+				.clientSecret("resource_server_secret")
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+				.tokenSettings(TokenSettings
+						.builder()
+						.accessTokenTimeToLive(Duration.ofMinutes(60))
+						.build())
+				.build();
+		InMemoryRegisteredClientRepository clientRepository = 
+				new InMemoryRegisteredClientRepository(registredClient, resourceServer);
 		return clientRepository;
 	}
 	
