@@ -19,12 +19,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -72,7 +75,7 @@ public class SecurityConfig {
 				.scope(OidcScopes.OPENID)
 				.tokenSettings(TokenSettings
 					.builder()
-					.accessTokenTimeToLive(Duration.ofMinutes(15))
+					.accessTokenTimeToLive(Duration.ofMinutes(60))
 					.build())
 				.build();
 		InMemoryRegisteredClientRepository clientRepository = new InMemoryRegisteredClientRepository(registredClient);
@@ -108,5 +111,13 @@ public class SecurityConfig {
 	@Bean 
 	AuthorizationServerSettings authorizationServerSettings() {
 		return AuthorizationServerSettings.builder().build();
+	}
+	
+	@Bean
+	OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+		return context -> {
+			JwtClaimsSet.Builder claims = context.getClaims();
+			claims.claim("priority", "HIGH");
+		};
 	}
 }
