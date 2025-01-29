@@ -15,13 +15,15 @@ public class SecurityConfig {
 
 	@Value("${keySetURI}")
 	private String keySetURI;
+	
 	private final JwtAuthenticationConverter converter;
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.oauth2ResourceServer(oauthCust -> oauthCust.jwt(jwtCust -> jwtCust
-				.jwkSetUri(keySetURI)
-				.jwtAuthenticationConverter(converter)));
+		http.oauth2ResourceServer(oauthCust -> oauthCust
+				.jwt(jwtCust -> jwtCust
+					.jwkSetUri(keySetURI)
+					.jwtAuthenticationConverter(converter)));
 		http.authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated());
 		http.csrf(customizer -> customizer.disable());
 		return http.build();
