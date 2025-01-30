@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -69,12 +70,15 @@ public class SecurityConfig {
 				.withId(UUID.randomUUID().toString())
 				.clientId("client")
 				.clientSecret("secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.redirectUri("https://www.manning.com/authorized")  
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
 				.scope(OidcScopes.OPENID)
+				.scope("CUSTOM")
 				.tokenSettings(TokenSettings
 					.builder()
+					.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
 					.accessTokenTimeToLive(Duration.ofMinutes(60))
 					.build())
 				.build();
