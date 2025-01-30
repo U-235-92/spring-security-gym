@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
 
+//	@GetMapping("/demo")
+//	public Authentication demo(Authentication authentication) {
+//		return authentication;
+//	}
+	
 	@GetMapping("/demo")
-	public Authentication demo(Authentication authentication) {
-		return authentication;
+	public String demo() {
+		return "Demo";
 	}
 }
