@@ -11,11 +11,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -23,6 +27,9 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -34,7 +41,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
 public class SecurityConfig {
 
-	@Bean
+	@Bean()
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.with(OAuth2AuthorizationServerConfigurer.authorizationServer(), Customizer.withDefaults());
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
@@ -54,14 +61,13 @@ public class SecurityConfig {
 		RegisteredClient registredClient = RegisteredClient
 				.withId(UUID.randomUUID().toString())
 				.clientId("client")
-				.clientSecret("secret") 
+				.clientSecret("secret")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
 				.scope(OidcScopes.OPENID)
 				.scope("CUSTOM")
 				.tokenSettings(TokenSettings
 					.builder()
-					.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
 					.accessTokenTimeToLive(Duration.ofMinutes(60))
 					.build())
 				.build();
