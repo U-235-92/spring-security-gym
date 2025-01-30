@@ -20,6 +20,7 @@
 		<module>spring-security-simple</module>
 		<module>spring-security-authorization-server</module>
 		<module>spring-security-resource-server</module>
+		<module>spring-security-opaque-token-authorization-server</module>
 	</modules>
 
 	<properties>
