@@ -29,7 +29,7 @@ public class SecurityConfig {
 	
 	@Bean
 	ClientRegistrationRepository clientRegistrationRepository() {
-		ClientRegistration customClientRegistration = ClientRegistration
+		ClientRegistration authorizationClientRegistration = ClientRegistration
 				.withRegistrationId(UUID.randomUUID().toString())
 				.clientId("client")
 				.clientSecret("secret")
@@ -53,7 +53,9 @@ public class SecurityConfig {
 				.redirectUri("http://localhost:5086/login/oauth2/code/google-spring-security-oauth-client")
 				.build();
 		InMemoryClientRegistrationRepository inMemoryClientclRegistrationRepository = 
-				new InMemoryClientRegistrationRepository(customClientRegistration, googleClientRegistration);
+				new InMemoryClientRegistrationRepository(
+						authorizationClientRegistration, 
+						googleClientRegistration);
 		return inMemoryClientclRegistrationRepository;
 	}
 	
