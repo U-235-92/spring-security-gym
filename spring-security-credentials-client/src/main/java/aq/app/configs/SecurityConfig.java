@@ -1,7 +1,5 @@
 package aq.app.configs;
 
-import java.util.UUID;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -40,7 +38,7 @@ public class SecurityConfig {
 	@Bean
 	ClientRegistrationRepository clientRegistrationRepository() {
 		ClientRegistration credentialsClientRegistration = ClientRegistration
-				.withRegistrationId(UUID.randomUUID().toString())
+				.withRegistrationId("credentials-client")
 				.clientId("client")
 				.clientSecret("secret")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
