@@ -23,6 +23,7 @@
 		<module>spring-security-opaque-token-authorization-server</module>
 		<module>spring-security-jwt-token-authorization-server</module>
 		<module>spring-security-oauth-client</module>
+		<module>spring-security-credentials-client</module>
 	</modules>
 
 	<properties>
